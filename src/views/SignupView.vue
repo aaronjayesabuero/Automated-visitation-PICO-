@@ -1,20 +1,11 @@
 <script setup>
-import { ref } from 'vue'
+import AppLayout from '@/components/layout/AppLayout.vue';
 
-const theme = ref('green')
 </script>
 
 <template>
-  <v-responsive class="border rounded">
-    <v-app :theme="theme">
-      <v-main
-        class="fill-height"
-        style="
-          background-image: url('/bg.png');
-          background-size: cover;
-          background-position: center;
-        "
-      >
+  <app-layout>
+    <template #content>
         <v-container class="fill-height d-flex align-center justify-center">
           <v-row class="justify-center">
             <v-col cols="12" md="6">
@@ -52,16 +43,6 @@ const theme = ref('green')
             </v-col>
           </v-row>
         </v-container>
-      </v-main>
-
-      <v-footer
-        color="#D5E1D2"
-        class="justify-center text-center"
-        style="border-bottom: 4px solid yellow"
-        app
-      >
-        All rights reserved. Caraga State University
-      </v-footer>
-    </v-app>
-  </v-responsive>
+      </template>
+      </app-layout>
 </template>
