@@ -31,4 +31,5 @@ const organization = ref('')
       </v-footer>
     </v-app>
   </v-responsive>
-</template>
+
+
