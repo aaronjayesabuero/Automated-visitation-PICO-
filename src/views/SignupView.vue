@@ -66,4 +66,5 @@ import AppLayout from '@/components/layout/AppLayout.vue'
       </v-card>
     </template>
   </app-layout>
+  </template>
 
