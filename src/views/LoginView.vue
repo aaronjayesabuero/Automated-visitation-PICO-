@@ -1,5 +1,7 @@
 <script setup>
+import { ref } from 'vue'
 import AppLayout from '@/components/layout/AppLayout.vue'
+const organization = ref('')
 </script>
 
 <template>
