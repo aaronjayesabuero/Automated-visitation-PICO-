@@ -1,5 +1,7 @@
 <script setup>
+import { ref } from 'vue'
 import AppLayout from '@/components/layout/AppLayout.vue'
+const organization = ref('')
 </script>
 
 <template>
@@ -61,5 +63,4 @@ import AppLayout from '@/components/layout/AppLayout.vue'
       </v-card>
     </template>
   </AppLayout>
-  </template>
-
+</template>
