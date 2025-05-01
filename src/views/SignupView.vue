@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 import AppLayout from '@/components/layout/AppLayout.vue'
 const organization = ref('')
+const visible = ref(false)
+const Confirmvisible = ref(false)
 </script>
 
 <template>
@@ -44,12 +46,22 @@ const organization = ref('')
           <v-form fast-fail @submit.prevent>
             <v-text-field label="Email" prepend-inner-icon="mdi-email" />
 
-            <v-text-field label="Password" type="password" prepend-inner-icon="mdi-lock" />
+            <v-text-field
+              label="Password"
+              prepend-inner-icon="mdi-lock"
+              :type="visible ? 'text' : 'password'"
+              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+              density="compact"
+              @click:append-inner="visible = !visible"
+            />
 
             <v-text-field
               label="Confirm password"
-              type="password"
               prepend-inner-icon="mdi-lock-check"
+              :type="Confirmvisible ? 'text' : 'password'"
+              :append-inner-icon="Confirmvisible ? 'mdi-eye-off' : 'mdi-eye'"
+              density="compact"
+              @click:append-inner="Confirmvisible = !Confirmvisible"
             />
             <v-select
               v-model="organization"
@@ -69,4 +81,3 @@ const organization = ref('')
     </template>
   </app-layout>
 </template>
-

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import AppLayout from '@/components/layout/AppLayout.vue'
 const organization = ref('')
+const visible = ref(false)
 </script>
 
 <template>
@@ -10,7 +11,7 @@ const organization = ref('')
       <v-row class="justify-center">
         <v-col cols="12" md="6">
           <v-card class="mx-auto" elevation="16" max-width="344">
-            <div class="d-flex justify-center align-center pa-1  ">
+            <div class="d-flex justify-center align-center pa-1">
               <v-img src="/csulogo.png" width="140" height="150" alt="CSU Logo"></v-img>
             </div>
 
@@ -43,7 +44,14 @@ const organization = ref('')
           <v-form fast-fail @submit.prevent>
             <v-text-field label="Email" prepend-inner-icon="mdi-email" />
 
-            <v-text-field label="Password" type="password" prepend-inner-icon="mdi-lock" />
+            <v-text-field
+              prepend-inner-icon="mdi-lock"
+              label="Password"
+              :type="visible ? 'text' : 'password'"
+              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+              density="compact"
+              @click:append-inner="visible = !visible"
+            />
             <v-select
               v-model="organization"
               label="Organization"
