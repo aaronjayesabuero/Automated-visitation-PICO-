@@ -1,8 +1,28 @@
 <script setup>
 import { ref } from 'vue'
+import { requiredValidator, emailValidator } from '@/utils/validators'
 import AppLayout from '@/components/layout/AppLayout.vue'
 const organization = ref('')
 const visible = ref(false)
+const refVForm = ref()
+const formDataDafault = {
+  email: '',
+  password: '',
+}
+
+const formData = ref({
+  ...formDataDafault,
+})
+
+const onSubmit = () => {
+  // alert(formData.value.email)
+}
+
+const onFormSubmit = () => {
+  refVForm.value?.validate().then(({ valid }) => {
+    if (valid) onSubmit()
+  })
+}
 </script>
 
 <template>
@@ -41,17 +61,26 @@ const visible = ref(false)
         </div>
 
         <v-card-text class="pt-4">
-          <v-form fast-fail @submit.prevent>
-            <v-text-field label="Email" prepend-inner-icon="mdi-email" />
+          <v-form ref="refVForm" @submit.prevent="onFormSubmit">
+            <v-text-field
+              v-model="formData.email"
+              label="Email"
+              prepend-inner-icon="mdi-email"
+              :rules="[requiredValidator, emailValidator]"
+            >
+            </v-text-field>
 
             <v-text-field
+              v-model="formData.password"
               prepend-inner-icon="mdi-lock"
               label="Password"
               :type="visible ? 'text' : 'password'"
               :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
               density="compact"
               @click:append-inner="visible = !visible"
-            />
+              :rules="[requiredValidator]"
+            >
+            </v-text-field>
             <v-select
               v-model="organization"
               label="Organization"
