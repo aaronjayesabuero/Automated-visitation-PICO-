@@ -34,4 +34,9 @@ a,
   }
 }
 
+/* global or scoped style */
+.sticky-nav {
+  transition: box-shadow 0.3s ease;
+}
+
 

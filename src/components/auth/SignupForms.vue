@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { supabase, formActionDefault } from '@/utils/supabase'
 import AlertNotification from '@/components/common/AlertNotification.vue'
+import { useRouter } from 'vue-router'
 import {
   requiredValidator,
   emailValidator,
@@ -12,6 +13,7 @@ const organization = ref('')
 const visible = ref(false)
 const Confirmvisible = ref(false)
 const refVForm = ref()
+const router = useRouter()    
 
 const formDataDefault = {
   email: '',
@@ -39,9 +41,10 @@ const onSubmit = async () => {
     formAction.value.formErrorMessage = error.message
     formAction.value.formStatus = error.status
   } else if (data) {
-    formAction.value.formSuccessMessage = 'Successfully Sign.'
+    formAction.value.formSuccessMessage = 'Successfully Signed up.'
     // formAction.value.formErrorMessage = ''
     refVForm.value?.reset()
+    router.replace('/homepage')
   }
   formAction.value.formProcess = false
 }
