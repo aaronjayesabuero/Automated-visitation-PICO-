@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 const theme = ref('green')
-const organization = ref('')
+
 </script>
 
 <template>
