@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-
+import { supabase, formActionDefault } from '@/utils/supabase'
+import AlertNotification from '@/components/common/AlertNotification.vue'
 import {
   requiredValidator,
   emailValidator,
@@ -12,18 +13,37 @@ const visible = ref(false)
 const Confirmvisible = ref(false)
 const refVForm = ref()
 
-const formDataDafault = {
+const formDataDefault = {
   email: '',
   password: '',
   password_confimation: '',
 }
 
 const formData = ref({
-  ...formDataDafault,
+  ...formDataDefault,
 })
 
-const onSubmit = () => {
-  alert(formData.value.email)
+const formAction = ref({
+  ...formActionDefault,
+})
+
+const onSubmit = async () => {
+  formAction.value = { ...formActionDefault }
+  formAction.value.formProcess = true
+
+  const { data, error } = await supabase.auth.signUp({
+    email: formData.value.email,
+    password: formData.value.password,
+  })
+  if (error) {
+    formAction.value.formErrorMessage = error.message
+    formAction.value.formStatus = error.status
+  } else if (data) {
+    formAction.value.formSuccessMessage = 'Successfully Sign.'
+    // formAction.value.formErrorMessage = ''
+    refVForm.value?.reset()
+  }
+  formAction.value.formProcess = false
 }
 
 const onFormSubmit = () => {
@@ -34,6 +54,10 @@ const onFormSubmit = () => {
 </script>
 
 <template>
+  <AlertNotification
+    :form-success-message="formAction.formSuccessMessage"
+    :form-error-message="formAction.formErrorMessage"
+  ></AlertNotification>
   <v-form ref="refVForm" @submit.prevent="onFormSubmit">
     <v-text-field
       v-model="formData.email"
@@ -77,7 +101,14 @@ const onFormSubmit = () => {
       :rules="[requiredValidator]"
     ></v-select>
 
-    <v-btn class="mt-2" type="submit" block color="#3CCC32">
+    <v-btn
+      class="mt-2"
+      type="submit"
+      block
+      color="#3CCC32"
+      :disabled="formAction.formProcess"
+      :loading="formAction.formProcess"
+    >
       <h3>Sign up</h3>
     </v-btn>
   </v-form>
