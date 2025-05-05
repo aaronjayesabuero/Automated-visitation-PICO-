@@ -87,12 +87,26 @@ const buttons = [
           <v-sheet class="mx-auto mt-10" width="800" color="green" />
         </v-container>
         
-    <v-footer class="text-center d-flex flex-column ga-2 py-4" color="#D5E1D2">
+    <v-footer class="text-center d-flex flex-column ga-1 py-2" color="#100A08">
       <div class="d-flex justify-center align-center pa-1">
               <v-img src="/csulogo.png" width="100" height="100" alt="CSU Logo"></v-img>
             </div>
     <div class="text-caption font-weight-bold opacity-60">
-      <span>All rights reserved. Caraga State University</span>
+      <span>Copyright © 2025 All rights reserved.</span>
+      <v-hover>
+  <template v-slot:default="{ isHovering, props }">
+    <a
+      v-bind="props"
+      href="https://www.carsu.edu.ph/"
+      target="_blank"
+      rel="noopener"
+      class="text-decoration-underline mt-1"
+      :style="{ color: isHovering ? '#4CAF50' : 'white', transition: 'color 0.3s' }"
+    >
+      Caraga State University
+    </a>
+  </template>
+</v-hover>
     </div>
     <v-divider></v-divider>
   </v-footer>
