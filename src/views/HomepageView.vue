@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-
 const drawer = ref(false)
 const buttons = [
   { label: 'VISITATION FORM', path: '/visitationform' },
@@ -30,23 +29,12 @@ const buttons = [
         </v-list>
       </v-navigation-drawer>
 
-      <v-app-bar app fixed color="#3E8639" height="130" flat elevate-on-scroll>
+      <v-app-bar app fixed color="#3E8639" height="110" flat elevate-on-scroll>
         <v-app-bar-nav-icon @click="drawer = !drawer" class="d-md-none" />
 
         <v-row class="align-center ml-2" no-gutters>
           <v-col cols="auto">
-          <v-img src="/csulogo.png" width="90" height="100" alt="CSU Logo" class="ma-2" />
-        </v-col>
-        <v-col>
-          <div class="text-black text-caption text-sm-subtitle-1">
-            <div class="font-weight-bold text-body-1 text-sm-h6"><span style="color: green; font-size: 25px; font-weight: bold">C</span>araga <span style="color: green; font-size: 25px; font-weight: bold">S</span>tate <span style="color: green; font-size: 25px; font-weight: bold">U</span>niversity</div>
-            <div class="text-subtitle-2">
-              <span style="color: green; font-size: 20px; font-weight: bold">C</span>ompetence
-              &nbsp; <span style="color: green; font-size: 20px; font-weight: bold">S</span>ervice
-              &nbsp;<span style="color: green; font-size: 20px; font-weight: bold">U</span
-              >prightness
-              </div>
-          </div>
+          <v-img src="/csulogo2.png" width="350" height="300" alt="CSU Logo" class="ma-2" />
         </v-col>
         </v-row>
         <v-spacer />
@@ -68,7 +56,7 @@ const buttons = [
       </v-app-bar>
       
       <v-main style="height: 100vh; overflow-y: auto">
-        <v-container class="pt-16">
+        <v-container >
           <v-sheet
             elevation="1"
             color="#F5FDE3"
@@ -77,18 +65,18 @@ const buttons = [
             class="mx-auto pa-6 pa-sm-4 pa-xs-2"
           >
             <h4 class="font-weight-bold mb-4 text-center">
-              CSU conducts training to sustain commitment to university branding
+              CSU conducts training to sustain commitment to university branding.
             </h4>
             <v-img
               src="/picomeeting.png"
-              max-height="300"
+              max-height="550"
               max-width="100%"
               contain
               class="mb-4"
             />
             <v-img
               src="/picomeeting2.png"
-              max-height="300"
+              max-height="600"
               max-width="100%"
               contain
               class="mb-4"
@@ -98,7 +86,18 @@ const buttons = [
 
           <v-sheet class="mx-auto mt-10" width="800" color="green" />
         </v-container>
+        
+    <v-footer class="text-center d-flex flex-column ga-2 py-4" color="#D5E1D2">
+      <div class="d-flex justify-center align-center pa-1">
+              <v-img src="/csulogo.png" width="100" height="100" alt="CSU Logo"></v-img>
+            </div>
+    <div class="text-caption font-weight-bold opacity-60">
+      <span>All rights reserved. Caraga State University</span>
+    </div>
+    <v-divider></v-divider>
+  </v-footer>
       </v-main>
     </v-app>
+
   </v-responsive>
 </template>
