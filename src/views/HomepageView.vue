@@ -39,8 +39,8 @@ const buttons = [
         </v-col>
         <v-col>
           <div class="text-black text-caption text-sm-subtitle-1">
-            <div class="font-weight-bold text-body-1 text-sm-h6">Caraga State University</div>
-            <div class="text-subtitle-2 mt-1">
+            <div class="font-weight-bold text-body-1 text-sm-h6"><span style="color: green; font-size: 25px; font-weight: bold">C</span>araga <span style="color: green; font-size: 25px; font-weight: bold">S</span>tate <span style="color: green; font-size: 25px; font-weight: bold">U</span>niversity</div>
+            <div class="text-subtitle-2">
               <span style="color: green; font-size: 20px; font-weight: bold">C</span>ompetence
               &nbsp; <span style="color: green; font-size: 20px; font-weight: bold">S</span>ervice
               &nbsp;<span style="color: green; font-size: 20px; font-weight: bold">U</span
