@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { requiredValidator, emailValidator } from '@/utils/validators'
 
-const organization = ref('')
 const visible = ref(false)
 const refVForm = ref()
 
@@ -49,15 +48,6 @@ const onFormSubmit = () => {
       :rules="[requiredValidator]"
     >
     </v-text-field>
-    <v-select
-      v-model="organization"
-      label="Organization"
-      :items="['admin', 'visitor']"
-      prepend-inner-icon="mdi-account"
-      density="compact"
-      class="mt-2"
-      :rules="[requiredValidator]"
-    ></v-select>
 
     <h4 class="mb-7">Forget password?</h4>
 
