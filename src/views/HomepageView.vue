@@ -15,6 +15,7 @@ const buttons = [
         temporary
         app
       >
+      
         <v-list>
           <v-list-item
             v-for="(btn, i) in buttons"
