@@ -9,7 +9,6 @@ import {
   passwordValidator,
   confirmedValidator,
 } from '@/utils/validators'
-const organization = ref('')
 const visible = ref(false)
 const Confirmvisible = ref(false)
 const refVForm = ref()
@@ -94,15 +93,6 @@ const onFormSubmit = () => {
       ]"
     >
     </v-text-field>
-    <v-select
-      v-model="organization"
-      label="Organization"
-      :items="['admin', 'visitor']"
-      prepend-inner-icon="mdi-account"
-      density="compact"
-      class="mt-2"
-      :rules="[requiredValidator]"
-    ></v-select>
 
     <v-btn
       class="mt-2"

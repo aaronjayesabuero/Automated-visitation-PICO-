@@ -7,6 +7,7 @@ const buttons = [
   { label: 'VISITATION FORM', path: '/visitationform' },
   { label: 'TRACE AND TRACK', path: '/traceandtrack' },
   { label: 'FEEDBACK FORM', path: '/feedbackform' },
+  { label: 'LOG OUT', path: '/' },
 ]
 </script>
 <template>
