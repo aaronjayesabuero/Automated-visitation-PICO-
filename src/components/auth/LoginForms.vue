@@ -54,6 +54,9 @@ const onSubmit = async () => {
       // Display success message upon successful login
       formAction.value.formSuccessMessage = 'Successfully Logged In.'
 
+      if (data.session?.access_token) {
+        localStorage.setItem('authToken', data.session.access_token)
+      }
       // Insert user credentials into your database (optional)
       const { error: insertError } = await supabase
         .from('users') // Replace 'users' with your actual table name
