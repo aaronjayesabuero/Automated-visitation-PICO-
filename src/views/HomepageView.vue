@@ -1,12 +1,32 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { supabase } from '@/utils/supabase'
 const drawer = ref(false)
+const router = useRouter()
 const buttons = [
   { label: 'VISITATION FORM', path: '/visitationform' },
   { label: 'TRACE AND TRACK', path: '/traceandtrack' },
   { label: 'FEEDBACK FORM', path: '/feedbackform' },
   { label: 'LOG OUT', path: '/' },
 ]
+// Logout function
+const handleLogout = async () => {
+  try {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error('Error during logout:', error.message)
+      return
+    }
+
+    localStorage.removeItem('authToken')
+
+    // Redirect to login or home page
+    await router.push('/login')
+  } catch (err) {
+    console.error('Unexpected error during logout:', err)
+  }
+}
 </script>
 <template>
   <v-responsive class="border rounded" max-height="max">
@@ -22,11 +42,22 @@ const buttons = [
             v-for="(btn, i) in buttons"
             :key="i"
           >
-            <router-link :to="btn.path" class="text-decoration-none w-100">
+          <router-link
+              v-if="btn.label !== 'LOG OUT'"
+              :to="btn.path"
+              class="text-decoration-none w-100"
+            >
               <v-list-item-title class="text-black">
                 {{ btn.label }}
               </v-list-item-title>
             </router-link>
+            <v-list-item-title
+              v-else
+              class="text-black cursor-pointer"
+              @click="handleLogout"
+            >
+              {{ btn.label }}
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
@@ -48,11 +79,25 @@ const buttons = [
             cols="auto"
             class="d-flex justify-center px-2"
           >
-            <router-link :to="btn.path" style="text-decoration: none">
+          <router-link
+              v-if="btn.label !== 'LOG OUT'"
+              :to="btn.path"
+              style="text-decoration: none"
+            >
               <v-btn color="#D9D9D9" class="text-black" height="40" width="180">
                 {{ btn.label }}
               </v-btn>
             </router-link>
+            <v-btn
+              v-else
+              color="#D9D9D9"
+              class="text-black"
+              height="40"
+              width="180"
+              @click="handleLogout"
+            >
+              {{ btn.label }}
+            </v-btn>
           </v-col>
         </v-row>
       </v-app-bar>
