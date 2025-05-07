@@ -6,7 +6,7 @@ const drawer = ref(false)
 const router = useRouter()
 const buttons = [
   { label: 'VISITATION FORM', path: '/visitationform' },
-  { label: 'TRACE AND TRACK', path: '/traceandtrack' },
+  { label: 'TRACE AND TRACK', path: '/trace&track' },
   { label: 'FEEDBACK FORM', path: '/feedbackform' },
   { label: 'LOG OUT', path: '/' },
 ]

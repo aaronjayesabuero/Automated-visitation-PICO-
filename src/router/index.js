@@ -3,6 +3,8 @@ import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
 import HomepageView from '@/views/HomepageView.vue'
 import VisitationFormView from '@/views/VisitationFormView.vue'
+import TraceTrackView from '@/views/Trace&TrackView.vue'
+import FeedbackView from '@/views/FeedbackView.vue'
 
 // Mock authentication function (replace with your actual auth logic)
 const isAuthenticated = () => {
@@ -37,6 +39,19 @@ const router = createRouter({
       name: 'visitationform',
       component: VisitationFormView,
       meta: { requiresAuth: true }, // Add meta field for protected routes
+    },
+    {
+      path: '/trace&track',
+      name: 'trace&track',
+      component: TraceTrackView,
+      meta: { requiresAuth: true },
+    },
+
+    {
+      path: '/feedbackform',
+      name: 'feedbackform',
+      component: FeedbackView,
+      meta: { requiresAuth: true },
     },
   ],
 })

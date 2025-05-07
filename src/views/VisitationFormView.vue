@@ -1,14 +1,85 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { supabase } from '@/utils/supabase'
 
 const drawer = ref(false)
+const requests = ref([])
 const router = useRouter()
+
+const form = ref({
+  preferredDate: '',
+  alternateDate: '',
+  purpose: '',
+  office: '',
+  engagement: '',
+  institution: '',
+  contactPerson: '',
+  delegateCount: '',
+  delegateNames: '',
+  topics: '',
+  otherInfo: ''
+})
+const checkRequests = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('visitation_requests')
+      .select('*')
+      .eq('user_id', supabase.auth.user()?.id)
+    
+    if (error) throw error
+    requests.value = data || []
+  } catch (error) {
+    console.error('Error fetching requests:', error)
+  }
+}
+// Submit form
+const submitForm = async () => {
+  try {
+    isLoading.value = true
+    const { data, error } = await supabase
+      .from('visitation_requests')
+      .insert([{
+        ...form.value,
+        user_id: supabase.auth.user()?.id,
+        status: 'Pending',
+        created_at: new Date()
+      }])
+    
+    if (error) throw error
+    
+    // Reset form and refresh requests
+    form.value = {
+      preferredDate: '',
+      alternateDate: '',
+      purpose: '',
+      office: '',
+      engagement: '',
+      institution: '',
+      contactPerson: '',
+      delegateCount: '',
+      delegateNames: '',
+      topics: '',
+      otherInfo: ''
+    }
+    
+    await checkRequests()
+    router.push('/trace&track')
+    
+  } catch (error) {
+    console.error('Submission error:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(() => {
+  checkRequests()
+})
 
 const buttons = [
   { label: 'VISITATION FORM', path: '/visitationform' },
-  { label: 'TRACE AND TRACK', path: '/traceandtrack' },
+  { label: 'TRACE AND TRACK', path: '/trace&track' },
   { label: 'FEEDBACK FORM', path: '/feedbackform' },
   { label: 'LOG OUT', path: '/' },
 ]
@@ -104,16 +175,7 @@ const handleLogout = async () => {
       </v-app-bar>
 
       <v-main style="height: 100vh; overflow-y: auto">
-        <div
-          style="
-            position: sticky;
-            top: 10px;
-            z-index: 9;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          "
-        >
-        </div>
+
         <v-container>
           <v-sheet elevation="1" color="#F5FDE3" rounded max-width="800" class="mx-auto pa-6 pa-sm-4 pa-xs-2">
             <h2 class="font-weight-bold mb-4 text-center">VISITATION FORM</h2>
@@ -124,35 +186,40 @@ const handleLogout = async () => {
               without prior notice.
             </p>
             <v-divider class="my-4" color="black" thickness="2"></v-divider>
+            <v-form @submit.prevent="submitForm">
             <h3>I. GENERAL INFORMATION</h3>
             <p class="mr-5">Preferred Date And Time of Visit.</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field v-model="form.preferredDate" variant="outlined" density="compact"></v-text-field>
             <p>Alternate Date And Time of Visit.</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field v-model="form.alternateDateDate" variant="outlined" density="compact"></v-text-field>
             <p>Purpose of Visit.</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field v-model="form.purpose" variant="outlined" density="compact"></v-text-field>
             <p>Selected Faculty Centered Office Organization to Visit.</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field v-model="form.office" variant="outlined" density="compact"></v-text-field>
             <p>Manner of Engagement (in-person or virtual)</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field v-model="form.engagement" variant="outlined" density="compact"></v-text-field>
             <h3 class="mt-4">II. VISITORS INFORMATION</h3>
             <p>Name of Institution Agency.</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field v-model="form.institution" variant="outlined" density="compact"></v-text-field>
             <p>Name and Contact Details of the Contact Person.</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field v-model="form.contactPerson" variant="outlined" density="compact"></v-text-field>
             <p>Number of Delegate(s).</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field lv-model="form.delegateCount" variant="outlined" density="compact" type="number"></v-text-field>
             <p>Names and Position of the Delegates.</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field  v-model="form.delegateNames" variant="outlined" density="compact" rows="2"></v-text-field>
             <p>Topics for Discussion.</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field v-model="form.topics" variant="outlined" density="compact" rows="2"></v-text-field>
             <p>Other Information Concern.</p>
-            <v-text-field label="" variant="solo-filled"></v-text-field>
+            <v-text-field v-model="form.otherInfo" variant="outlined" density="compact" rows="2"></v-text-field>
             <v-row justify="center" class="mt-6">
               <v-col cols="auto">
-                <v-btn color="green" style="color:black;">Submit</v-btn>
+                <v-btn color="green"                   
+                    type="submit"
+                    :loading="isLoading"
+                    :disabled="isLoading">Submit</v-btn>
               </v-col>
             </v-row>
+          </v-form>
           </v-sheet>
         </v-container>
         <v-container>
