@@ -43,7 +43,7 @@ const onSubmit = async () => {
     formAction.value.formSuccessMessage = 'Successfully Signed up.'
     // formAction.value.formErrorMessage = ''
     refVForm.value?.reset()
-    router.replace('/homepage')
+    router.replace('/login')
   }
   formAction.value.formProcess = false
 }
