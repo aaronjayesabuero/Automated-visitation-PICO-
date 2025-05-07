@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js'
-import { errorMessages } from 'vue/compiler-sfc'
 
 // Create a single supabase client for interacting with your database
 export const supabase = createClient(
@@ -17,12 +16,11 @@ export const formActionDefault = {
 
 export const isAuthenticated = async () => {
     const { data, error } = await supabase.auth.getSession()
-    
+
     if (error) {
       console.error('Error getting session:', error.message)
       return false
     }
-  
+
     return !!data.session
   }
-  
