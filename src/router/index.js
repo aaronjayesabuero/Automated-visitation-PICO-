@@ -5,6 +5,8 @@ import HomepageView from '@/views/HomepageView.vue'
 import VisitationFormView from '@/views/VisitationFormView.vue'
 import TraceTrackView from '@/views/Trace&TrackView.vue'
 import FeedbackView from '@/views/FeedbackView.vue'
+import AdminHomepageView from '@/views/AdminHomepageView.vue'
+import SubmissionsView from '@/views/SubmissionsView.vue'
 
 // Mock authentication function (replace with your actual auth logic)
 const isAuthenticated = () => {
@@ -52,6 +54,19 @@ const router = createRouter({
       name: 'feedbackform',
       component: FeedbackView,
       meta: { requiresAuth: true },
+    },
+
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: AdminHomepageView,
+     
+    },
+    {
+      path: '/admin/submissions',
+      name: 'admin/submissions',
+      component: SubmissionsView,
+     
     },
   ],
 })

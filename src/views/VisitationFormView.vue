@@ -6,6 +6,7 @@ import { supabase } from '@/utils/supabase'
 const drawer = ref(false)
 const requests = ref([])
 const router = useRouter()
+const isLoading = ref(false)
 
 const form = ref({
   preferredDate: '',
@@ -20,12 +21,25 @@ const form = ref({
   topics: '',
   otherInfo: ''
 })
+
+const validateForm = () => {
+  if (!form.value.preferredDate || !form.value.purpose) {
+    alert('Please fill in all required fields.')
+    return false
+  }
+  return true
+}
+
 const checkRequests = async () => {
   try {
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    console.log('User:', user)
+    console.log('Auth Error:', authError)
+
     const { data, error } = await supabase
       .from('visitation_requests')
       .select('*')
-      .eq('user_id', supabase.auth.user()?.id)
+      .eq('user_id', user?.id)
     
     if (error) throw error
     requests.value = data || []
@@ -33,21 +47,33 @@ const checkRequests = async () => {
     console.error('Error fetching requests:', error)
   }
 }
-// Submit form
+
 const submitForm = async () => {
+  if (!validateForm()) return
   try {
     isLoading.value = true
+
+    // Get the authenticated user
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError) throw new Error('Failed to retrieve user information.')
+    if (!user) throw new Error('User is not authenticated.')
+
+    // Insert form data into Supabase
     const { data, error } = await supabase
       .from('visitation_requests')
       .insert([{
         ...form.value,
-        user_id: supabase.auth.user()?.id,
+        user_id: user.id,
         status: 'Pending',
         created_at: new Date()
       }])
+    console.log('Insert Data:', data)
+    console.log('Insert Error:', error)
     
     if (error) throw error
-    
+
+    alert('Form submitted successfully!')
+
     // Reset form and refresh requests
     form.value = {
       preferredDate: '',
@@ -65,9 +91,9 @@ const submitForm = async () => {
     
     await checkRequests()
     router.push('/trace&track')
-    
   } catch (error) {
     console.error('Submission error:', error)
+    alert(`Failed to submit the form. Error: ${error.message}`)
   } finally {
     isLoading.value = false
   }
@@ -201,7 +227,7 @@ const handleLogout = async () => {
             <p class="mr-5">Preferred Date And Time of Visit.</p>
             <v-text-field v-model="form.preferredDate" variant="outlined" density="compact"></v-text-field>
             <p>Alternate Date And Time of Visit.</p>
-            <v-text-field v-model="form.alternateDateDate" variant="outlined" density="compact"></v-text-field>
+            <v-text-field v-model="form.alternateDate" variant="outlined" density="compact"></v-text-field>
             <p>Purpose of Visit.</p>
             <v-text-field v-model="form.purpose" variant="outlined" density="compact"></v-text-field>
             <p>Selected Faculty Centered Office Organization to Visit.</p>
