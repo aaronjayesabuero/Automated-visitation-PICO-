@@ -175,7 +175,17 @@ const handleLogout = async () => {
       </v-app-bar>
 
       <v-main style="height: 100vh; overflow-y: auto">
-
+       
+        <div
+          style="
+            position: sticky;
+            top: 10px;
+            z-index: 9;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          "
+        >
+        </div>
         <v-container>
           <v-sheet elevation="1" color="#F5FDE3" rounded max-width="800" class="mx-auto pa-6 pa-sm-4 pa-xs-2">
             <h2 class="font-weight-bold mb-4 text-center">VISITATION FORM</h2>
