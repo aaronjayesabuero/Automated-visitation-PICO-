@@ -10,46 +10,30 @@ const router = useRouter()
 const isLoading = ref(false)
 
 const form = ref({
-  preferredDate: '',
-  preferredTime: '',
-  alternateDate: '',
-  alternateTime: '',
   purpose: '',
-  office: '',
+  preferredDate: '',
+  alternateDate: '',
+  office_id: null,
   engagement: '',
-  institution: '',
   contactPerson: '',
-  delegateCount: '',
+  delegateCount: 0,
   delegateNames: '',
   topics: '',
   otherInfo: ''
 })
+
 
 const menuPreferred = ref(false)
 const menuPreferredTime = ref(false)
 const menuAlternate = ref(false)
 const menuAlternateTime = ref(false)
 
+
+
 const validateForm = () => {
-  const requiredFields = [
-    'preferredDate',
-    'preferredTime',
-    'alternateDate',
-    'alternateTime',
-    'purpose',
-    'office',
-    'engagement',
-    'institution',
-    'contactPerson',
-    'delegateCount',
-    'delegateNames',
-    'topics'
-  ]
-  for (const field of requiredFields) {
-    if (!form.value[field]) {
-      alert('Please fill in all required fields.')
-      return false
-    }
+  if (!form.value.preferredDate || !form.value.purpose) {
+    alert('Please fill in all required fields.')
+    return false
   }
   return true
 }
@@ -77,10 +61,12 @@ const submitForm = async () => {
   try {
     isLoading.value = true
 
+    // Get the authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError) throw new Error('Failed to retrieve user information.')
     if (!user) throw new Error('User is not authenticated.')
 
+    // Insert form data into Supabase
     const { data, error } = await supabase
       .from('visitation_requests')
       .insert([{
@@ -96,7 +82,7 @@ const submitForm = async () => {
 
     alert('Form submitted successfully!')
 
-
+    // Reset form and refresh requests
     form.value = {
       preferredDate: '',
       preferredTime: '',
@@ -248,103 +234,114 @@ const handleLogout = async () => {
             <v-divider class="my-4" color="black" thickness="2"></v-divider>
             <v-form @submit.prevent="submitForm">
             <h3>I. GENERAL INFORMATION</h3>
-<p class="mr-5">Preferred Date and Time of Visit</p>
-<v-row>
-  <v-col cols="6">
-    <v-menu
-      v-model="menuPreferred"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      min-width="auto"
-    >
-      <template #activator="{ on, attrs }">
-<v-date-input
-  variant="outlined"
-  label="Date"
-  class="mb-2"
-</v-date-input>
-      </template>
-      <v-date-picker
-        v-model="form.preferredDate"
-        @input="menuPreferred = false"
-        :min="new Date().toISOString().substr(0, 10)"
-      ></v-date-picker>
-    </v-menu>
-  </v-col>
-  <v-col cols="6">
-    <v-menu
-      v-model="menuPreferredTime"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      min-width="auto"
-    >
-      <template #activator="{ on, attrs }">
-<v-text-field
-  variant="outlined"
-  label="Time"
-  type="time"
-/>
-      </template>
+                <p class="mr-5">Preferred Date and Time of Visit</p>
+                <v-row>
+                  <v-col cols="6">
+                    <v-menu
+                      v-model="menuPreferred"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template #activator="{ on, attrs }">
+                <v-date-input
+                  variant="outlined"
+                  label="Date"
+                  class="mb-2"
+                </v-date-input>
+                      </template>
+                      <v-date-picker
+                        v-model="form.preferredDate"
+                        @input="menuPreferred = false"
+                        :min="new Date().toISOString().substr(0, 10)"
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-menu
+                      v-model="menuPreferredTime"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template #activator="{ on, attrs }">
+                <v-text-field
+                  variant="outlined"
+                  label="Time"
+                  type="time"
+                />
+                      </template>
 
-    </v-menu>
-  </v-col>
-</v-row>
+                    </v-menu>
+                  </v-col>
+                </v-row>
 
-<p>Alternate Date and Time of Visit</p>
-<v-row>
-  <v-col cols="6">
-    <v-menu
-      v-model="menuAlternate"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      min-width="auto"
-    >
-      <template #activator="{ on, attrs }">
-<v-date-input
-  variant="outlined"
-  label="Date"
-  class="mb-2"
-</v-date-input>
-      </template>
+                <p>Alternate Date and Time of Visit</p>
+                <v-row>
+                  <v-col cols="6">
+                    <v-menu
+                      v-model="menuAlternate"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template #activator="{ on, attrs }">
+                <v-date-input
+                  variant="outlined"
+                  label="Date"
+                  class="mb-2"
+                </v-date-input>
+                      </template>
 
-    </v-menu>
-  </v-col>
-  <v-col cols="6">
-    <v-menu
-      v-model="menuAlternateTime"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      min-width="auto"
-    >
-      <template #activator="{ on, attrs }">
-<v-text-field
-  variant="outlined"
-  label="Time"
-  type="time"
-/>
-      </template>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-menu
+                      v-model="menuAlternateTime"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template #activator="{ on, attrs }">
+                <v-text-field
+                  variant="outlined"
+                  label="Time"
+                  type="time"
+                />
+                      </template>
 
-    </v-menu>
-  </v-col>
-</v-row>
+                    </v-menu>
+                  </v-col>
+                </v-row>
               
             <p>Purpose of Visit.</p>
             <v-text-field v-model="form.purpose" variant="outlined" density="compact"></v-text-field>
             <p>Selected Faculty Centered Office Organization to Visit.</p>
             <v-text-field v-model="form.office" variant="outlined" density="compact"></v-text-field>
             <p>Manner of Engagement (in-person or virtual)</p>
-            <v-text-field v-model="form.engagement" variant="outlined" density="compact"></v-text-field>
+            <v-select
+                clearable
+                label="Select"
+                :items="['In-Person', 'Virtual']"
+                variant="outlined"
+              ></v-select>
             <h3 class="mt-4">II. VISITORS INFORMATION</h3>
             <p>Name of Institution Agency.</p>
             <v-text-field v-model="form.institution" variant="outlined" density="compact"></v-text-field>
             <p>Name and Contact Details of the Contact Person.</p>
             <v-text-field v-model="form.contactPerson" variant="outlined" density="compact"></v-text-field>
             <p>Number of Delegate(s).</p>
-            <v-text-field v-model="form.delegateCount" variant="outlined" density="compact" type="number"></v-text-field>
+            <v-text-field
+              v-model="form.delegateCount"
+              variant="outlined"
+              density="compact"
+              type="number"
+              min="0"
+            ></v-text-field>
             <p>Names and Position of the Delegates.</p>
             <v-text-field  v-model="form.delegateNames" variant="outlined" density="compact" rows="2"></v-text-field>
             <p>Topics for Discussion.</p>
